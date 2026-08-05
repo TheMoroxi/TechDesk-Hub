@@ -546,3 +546,49 @@ showInventory();
 showReceipts();
 
 showNotes();
+
+// ==========================
+// EKSPORT JSON
+// ==========================
+
+function exportJSON(){
+
+    let data = JSON.stringify(
+        database,
+        null,
+        4
+    );
+
+
+    let blob = new Blob(
+        [data],
+        {
+            type: "application/json"
+        }
+    );
+
+
+    let url = URL.createObjectURL(blob);
+
+
+    let link = document.createElement("a");
+
+    link.href = url;
+
+    link.download =
+    "TechDesk_Hub_backup.json";
+
+
+    document.body.appendChild(link);
+
+
+    link.click();
+
+
+    document.body.removeChild(link);
+
+
+    URL.revokeObjectURL(url);
+
+
+}
