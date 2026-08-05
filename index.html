@@ -64,9 +64,25 @@ v0.2.2.1
 💾 Eksport danych
 </button>
 
+
+<br>
+
+
+<input 
+type="file"
+id="importFile"
+accept=".json"
+style="display:none"
+onchange="importJSON(event)"
+>
+
+
+<button onclick="document.getElementById('importFile').click()">
+📂 Import danych
+</button>
+
+
 </div>
-
-
 </aside>
 
 
