@@ -1,0 +1,484 @@
+/* 
+TechDesk Hub
+Style v0.2.1
+*/
+
+
+* {
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+
+body {
+
+    margin: 0;
+
+    background: #090d12;
+
+    color: #e8eef5;
+
+}
+
+
+/* GŁÓWNY KONTENER */
+
+.app {
+
+    display: flex;
+
+    min-height: 100vh;
+
+}
+
+
+
+/* =====================
+   SIDEBAR DESKTOP
+===================== */
+
+
+.sidebar {
+
+    width: 260px;
+
+    background: #111822;
+
+    border-right: 1px solid #263241;
+
+    padding: 25px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+}
+
+
+
+.sidebar h2 {
+
+    margin: 0;
+
+    font-size: 24px;
+
+}
+
+
+
+.version {
+
+    color: #7f8da0;
+
+    margin-top: -10px;
+
+    margin-bottom: 20px;
+
+}
+
+
+
+.sidebar button {
+
+
+    width: 100%;
+
+    text-align: left;
+
+    padding: 14px;
+
+    background: transparent;
+
+    color: #dce6f2;
+
+    border: 1px solid transparent;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    font-size: 15px;
+
+
+}
+
+
+
+.sidebar button:hover {
+
+
+    background: #182231;
+
+    border-color: #3b82f6;
+
+
+}
+
+
+
+.bottom {
+
+
+    margin-top: auto;
+
+    color: #8997a8;
+
+    padding: 12px;
+
+}
+
+
+
+/* =====================
+   CONTENT
+===================== */
+
+
+.content {
+
+
+    flex: 1;
+
+    padding: 35px;
+
+    overflow-y: auto;
+
+
+}
+
+
+
+.page {
+
+    display: none;
+
+}
+
+
+
+.page.active {
+
+    display: block;
+
+}
+
+
+
+h1 {
+
+    margin-top: 0;
+
+    font-size: 34px;
+
+}
+
+
+
+
+
+/* =====================
+   DASHBOARD CARDS
+===================== */
+
+
+.cards {
+
+
+    display: grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+
+
+    gap: 20px;
+
+    margin-top: 30px;
+
+
+}
+
+
+
+.card {
+
+
+    background: #111822;
+
+    border: 1px solid #263241;
+
+    border-radius: 18px;
+
+    padding: 25px;
+
+
+    transition: .2s;
+
+
+}
+
+
+
+.card:hover {
+
+
+    transform: translateY(-4px);
+
+    border-color:#3b82f6;
+
+
+}
+
+
+
+.card h2 {
+
+
+    font-size: 38px;
+
+    margin:0;
+
+
+}
+
+
+
+.card p {
+
+
+    color:#8997a8;
+
+}
+
+
+
+
+
+/* =====================
+   PANELS
+===================== */
+
+
+.box {
+
+
+    background:#111822;
+
+    border:1px solid #263241;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    margin-top:20px;
+
+
+}
+
+
+
+.box h3 {
+
+    margin-top:0;
+
+}
+
+
+
+
+
+input,
+select {
+
+
+    width:100%;
+
+    padding:14px;
+
+    margin-top:10px;
+
+    background:#090d12;
+
+    color:white;
+
+    border:1px solid #263241;
+
+    border-radius:10px;
+
+
+}
+
+
+
+
+
+button {
+
+
+    background:#151f2d;
+
+    color:white;
+
+    border:1px solid #263241;
+
+    padding:14px 18px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+
+}
+
+
+
+button:hover {
+
+    border-color:#3b82f6;
+
+}
+
+
+
+
+
+
+
+/* =====================
+   MOBILE
+===================== */
+
+
+@media(max-width:700px){
+
+
+
+.app {
+
+    display:block;
+
+}
+
+
+
+/* ukrywamy boczny pasek */
+
+
+.sidebar {
+
+
+    position:fixed;
+
+    bottom:0;
+
+    left:0;
+
+    right:0;
+
+    height:70px;
+
+    width:100%;
+
+
+    background:#111822;
+
+    border-right:none;
+
+    border-top:1px solid #263241;
+
+
+    flex-direction:row;
+
+    justify-content:space-around;
+
+    padding:8px;
+
+
+    z-index:100;
+
+
+}
+
+
+
+.sidebar h2,
+.version,
+.bottom {
+
+
+    display:none;
+
+}
+
+
+
+.sidebar button {
+
+
+    width:auto;
+
+    padding:10px;
+
+    font-size:0;
+
+
+}
+
+
+
+/* emoji zostają widoczne */
+
+.sidebar button::first-letter {
+
+
+    font-size:22px;
+
+}
+
+
+
+
+
+.content {
+
+
+    padding:20px;
+
+    padding-bottom:100px;
+
+
+}
+
+
+
+h1 {
+
+
+    font-size:28px;
+
+
+}
+
+
+
+.cards {
+
+
+    grid-template-columns:1fr;
+
+
+}
+
+
+
+.box {
+
+
+    padding:18px;
+
+}
+
+
+
+}
