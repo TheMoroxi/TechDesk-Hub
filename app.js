@@ -1,94 +1,42 @@
-let repairs =
-JSON.parse(localStorage.getItem("repairs"))
-||
-[];
+/*
+TechDesk Hub
+app.js v0.2.1
+*/
 
 
+// ==========================
+// BAZA LOKALNA
+// ==========================
 
 
-function saveData(){
+let database = {
 
-localStorage.setItem(
-"repairs",
-JSON.stringify(repairs)
-);
+    repairs: [],
 
-}
+    inventory: [],
 
+    receipts: [],
 
-
-
-
-
-
-function addRepair(){
-
-
-let repair = {
-
-
-id: Date.now(),
-
-
-device:
-document.getElementById("device").value,
-
-
-client:
-document.getElementById("client").value,
-
-
-phone:
-document.getElementById("phone").value,
-
-
-problem:
-document.getElementById("problem").value,
-
-
-status:
-document.getElementById("status").value,
-
-
-cost:
-document.getElementById("cost").value,
-
-
-note:
-document.getElementById("note").value,
-
-
-date:
-new Date().toLocaleDateString()
-
-
+    notes: []
 
 };
 
 
 
 
-if(!repair.device || !repair.problem){
 
-alert("Podaj urządzenie i problem");
-
-return;
-
-}
+function loadDatabase(){
 
 
+    let saved =
+    localStorage.getItem("techdesk_database");
 
 
-repairs.push(repair);
+    if(saved){
 
+        database = JSON.parse(saved);
 
-saveData();
-
-
-clearForm();
-
-
-renderRepairs();
+    }
 
 
 }
@@ -97,17 +45,13 @@ renderRepairs();
 
 
 
+function saveDatabase(){
 
 
-function clearForm(){
-
-
-document.querySelectorAll(
-".repair-form input, .repair-form textarea"
-)
-.forEach(
-element=>element.value=""
-);
+    localStorage.setItem(
+        "techdesk_database",
+        JSON.stringify(database)
+    );
 
 
 }
@@ -116,178 +60,52 @@ element=>element.value=""
 
 
 
+// ==========================
+// DASHBOARD
+// ==========================
 
 
+function updateDashboard(){
 
-function deleteRepair(id){
 
+    let repairs =
+    document.getElementById("repairCount");
 
-repairs =
-repairs.filter(
-repair=>repair.id!==id
-);
 
+    let parts =
+    document.getElementById("partsCount");
 
 
-saveData();
+    let receipts =
+    document.getElementById("receiptCount");
 
 
-renderRepairs();
 
 
-}
+    if(repairs){
 
+        repairs.innerText =
+        database.repairs.length;
 
+    }
 
 
 
+    if(parts){
 
+        parts.innerText =
+        database.inventory.length;
 
+    }
 
-function renderRepairs(){
 
 
-let list =
-document.getElementById(
-"repairList"
-);
+    if(receipts){
 
+        receipts.innerText =
+        database.receipts.length;
 
-
-let search =
-document.getElementById(
-"search"
-).value.toLowerCase();
-
-
-
-list.innerHTML="";
-
-
-
-
-let filtered =
-repairs.filter(
-repair=>
-
-repair.device.toLowerCase()
-.includes(search)
-
-||
-repair.client.toLowerCase()
-.includes(search)
-
-);
-
-
-
-
-
-filtered.forEach(repair=>{
-
-
-
-list.innerHTML += `
-
-
-<div class="repair-item">
-
-
-<h3>
-📱 ${repair.device}
-</h3>
-
-
-
-<p>
-👤 ${repair.client}
-</p>
-
-
-
-<p>
-☎ ${repair.phone}
-</p>
-
-
-
-<p>
-⚠ ${repair.problem}
-</p>
-
-
-
-<p>
-Status:
-<b>${repair.status}</b>
-</p>
-
-
-
-<p>
-💰 ${repair.cost || 0} zł
-</p>
-
-
-
-<p>
-📝 ${repair.note}
-</p>
-
-
-
-<small>
-Dodano:
-${repair.date}
-</small>
-
-
-
-<br><br>
-
-
-
-<button 
-class="delete"
-onclick="deleteRepair(${repair.id})">
-
-🗑 Usuń
-
-</button>
-
-
-</div>
-
-
-`;
-
-
-
-});
-
-
-
-
-updateStats();
-
-
-}
-
-
-
-
-
-
-
-
-
-function updateStats(){
-
-
-document.getElementById(
-"repairCount"
-).innerText =
-repairs.length;
+    }
 
 
 
@@ -297,4 +115,84 @@ repairs.length;
 
 
 
-renderRepairs();
+// ==========================
+// NAWIGACJA
+// ==========================
+
+
+function showPage(page){
+
+
+    let pages =
+    document.querySelectorAll(".page");
+
+
+    pages.forEach(
+        item => {
+
+            item.classList.remove("active");
+
+        }
+    );
+
+
+
+    let selected =
+    document.getElementById(page);
+
+
+
+    if(selected){
+
+        selected.classList.add("active");
+
+    }
+
+
+
+}
+
+
+
+
+
+// ==========================
+// TESTOWE DANE (PUSTE)
+// ==========================
+
+
+function clearDemoData(){
+
+
+    database = {
+
+        repairs: [],
+
+        inventory: [],
+
+        receipts: [],
+
+        notes: []
+
+    };
+
+
+    saveDatabase();
+
+    updateDashboard();
+
+
+}
+
+
+
+
+
+// ==========================
+// START
+// ==========================
+
+
+loadDatabase();
+
+updateDashboard();
