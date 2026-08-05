@@ -482,3 +482,113 @@ h1 {
 
 
 }
+
+/* ==========================
+   START SCREEN
+========================== */
+
+
+#welcomeOverlay{
+
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    height:100%;
+
+    background:rgba(0,0,0,0.75);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:9999;
+
+
+}
+
+
+
+#welcomeBox{
+
+
+    width:350px;
+
+    background:#ffffff;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    box-shadow:0 10px 40px rgba(0,0,0,0.4);
+
+
+}
+
+
+
+#welcomeBox h2{
+
+
+    margin-bottom:15px;
+
+    font-size:28px;
+
+
+}
+
+
+
+#welcomeBox p{
+
+
+    color:#555;
+
+    margin-bottom:25px;
+
+
+}
+
+
+
+#welcomeBox button{
+
+
+    width:100%;
+
+    padding:14px;
+
+    margin-top:12px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#222;
+
+    color:white;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+
+}
+
+
+
+#welcomeBox button:hover{
+
+
+    background:#444;
+
+
+}
