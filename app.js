@@ -592,3 +592,101 @@ function exportJSON(){
 
 
 }
+
+// ==========================
+// IMPORT JSON
+// ==========================
+
+function importJSON(event){
+
+
+    let file =
+    event.target.files[0];
+
+
+    if(!file){
+        return;
+    }
+
+
+
+    let reader =
+    new FileReader();
+
+
+
+    reader.onload = function(e){
+
+
+        try{
+
+
+            let imported =
+            JSON.parse(e.target.result);
+
+
+
+            if(
+                imported.repairs &&
+                imported.inventory &&
+                imported.receipts &&
+                imported.notes
+            ){
+
+
+                database = imported;
+
+
+                saveDatabase();
+
+
+                updateDashboard();
+
+
+                showRepairs();
+
+                showInventory();
+
+                showReceipts();
+
+                showNotes();
+
+
+
+                alert(
+                "✅ Kopia TechDesk Hub została przywrócona!"
+                );
+
+
+            }
+            else{
+
+
+                alert(
+                "❌ Nieprawidłowy plik kopii zapasowej"
+                );
+
+
+            }
+
+
+        }
+        catch(error){
+
+
+            alert(
+            "❌ Błąd odczytu pliku JSON"
+            );
+
+
+        }
+
+
+    };
+
+
+
+    reader.readAsText(file);
+
+
+}
