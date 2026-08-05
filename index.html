@@ -2,11 +2,10 @@
 <html lang="pl">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>TechDesk Hub</title>
+<title>TechDesk Hub v0.2.1</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -19,140 +18,148 @@
 <div class="app">
 
 
-<header>
+<!-- MENU BOCZNE -->
 
-<div class="logo">
-🔧 TechDesk Hub
-</div>
-
-<button>
-⚙
-</button>
-
-</header>
-
-
-
-<section class="hero">
-
-<h1>TECHDESK HUB</h1>
-
-<p>
-Technician Workspace v0.2
-</p>
-
-
-<div class="status">
-
-<span></span>
-
-SYSTEM ONLINE
-
-</div>
-
-</section>
-
-
-
-
-
-<section class="cards">
-
-
-<div class="card">
-
-<div class="icon">
-🔧
-</div>
-
-<h2>Naprawy</h2>
-
-<p id="repairCount">
-0
-</p>
-
-</div>
-
-
-
-<div class="card">
-
-<div class="icon">
-📦
-</div>
-
-<h2>Części</h2>
-
-<p id="partsCount">
-0
-</p>
-
-</div>
-
-
-
-<div class="card">
-
-<div class="icon">
-📝
-</div>
-
-<h2>Notatki</h2>
-
-<p id="notesCount">
-0
-</p>
-
-</div>
-
-
-</section>
-
-
-
-
-
-
-
-<section class="panel">
-
+<aside class="sidebar">
 
 <h2>
-🔧 Nowa naprawa
+🔧 TechDesk Hub
 </h2>
 
+<p class="version">
+v0.2.1
+</p>
 
 
-<div class="repair-form">
+<button onclick="showPage('dashboard')">
+🏠 Dashboard
+</button>
 
 
-<input 
-id="device"
-placeholder="Urządzenie np. Samsung S21">
+<button onclick="showPage('repairs')">
+🔧 Naprawy
+</button>
+
+
+<button onclick="showPage('inventory')">
+📦 Magazyn
+</button>
+
+
+<button onclick="showPage('receipts')">
+🧾 Paragony
+</button>
+
+
+<button onclick="showPage('notes')">
+📝 Notatki
+</button>
+
+
+<div class="bottom">
+⚙ Ustawienia
+</div>
+
+
+</aside>
 
 
 
-<input
-id="client"
-placeholder="Klient">
+
+
+<!-- GŁÓWNA CZĘŚĆ -->
+
+
+<main class="content">
 
 
 
-<input
-id="phone"
-placeholder="Telefon kontaktowy">
+<section id="dashboard" class="page active">
+
+
+<h1>
+🏠 Dashboard
+</h1>
+
+
+<div class="cards">
+
+
+<div class="card">
+
+<h2 id="repairCount">
+0
+</h2>
+
+<p>
+Naprawy
+</p>
+
+</div>
 
 
 
-<input
-id="problem"
-placeholder="Problem">
+<div class="card">
+
+<h2 id="partsCount">
+0
+</h2>
+
+<p>
+Części
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h2 id="receiptCount">
+0
+</h2>
+
+<p>
+Paragony
+</p>
+
+</div>
+
+
+</div>
+
+
+</section>
 
 
 
 
 
-<select id="status">
+
+
+<section id="repairs" class="page">
+
+
+<h1>
+🔧 Naprawy
+</h1>
+
+
+<div class="box">
+
+
+<h3>
+Dodaj naprawę
+</h3>
+
+
+<input placeholder="Urządzenie">
+
+
+<input placeholder="Problem">
+
+
+<select>
 
 <option>
 Nowe
@@ -170,65 +177,30 @@ Naprawa
 Gotowe
 </option>
 
+
 </select>
 
 
-
-
-
-<input
-id="cost"
-type="number"
-placeholder="Koszt zł">
-
-
-
-
-
-<textarea
-id="note"
-placeholder="Notatka techniczna">
-</textarea>
-
-
-
-
-
-<button onclick="addRepair()">
-
-➕ Zapisz naprawę
-
+<button>
+Zapisz
 </button>
 
 
 </div>
 
 
-</section>
+
+<div class="box">
+
+<h3>
+Lista napraw
+</h3>
 
 
+<p>
+Brak zapisanych napraw
+</p>
 
-
-
-
-
-<section class="panel">
-
-
-<h2>
-📋 Lista napraw
-</h2>
-
-
-
-<input
-id="search"
-placeholder="🔍 Szukaj..."
-oninput="renderRepairs()">
-
-
-
-<div id="repairList">
 
 </div>
 
@@ -239,11 +211,93 @@ oninput="renderRepairs()">
 
 
 
-<footer>
 
-TechDesk Hub v0.2
 
-</footer>
+
+<section id="inventory" class="page">
+
+
+<h1>
+📦 Magazyn
+</h1>
+
+
+<div class="box">
+
+
+<h3>
+Części
+</h3>
+
+
+<p>
+Magazyn zostanie dodany w kolejnej wersji.
+</p>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+<section id="receipts" class="page">
+
+
+<h1>
+🧾 Paragony
+</h1>
+
+
+<div class="box">
+
+<p>
+Moduł paragonów — przygotowany.
+</p>
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+<section id="notes" class="page">
+
+
+<h1>
+📝 Notatki
+</h1>
+
+
+<div class="box">
+
+<p>
+System notatek — przygotowany.
+</p>
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+</main>
 
 
 </div>
@@ -251,7 +305,33 @@ TechDesk Hub v0.2
 
 
 
-<script src="app.js"></script>
+
+<script>
+
+
+function showPage(page){
+
+
+let pages =
+document.querySelectorAll(".page");
+
+
+pages.forEach(
+p=>p.classList.remove("active")
+);
+
+
+
+document
+.getElementById(page)
+.classList.add("active");
+
+
+}
+
+
+
+</script>
 
 
 </body>
