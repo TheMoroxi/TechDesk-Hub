@@ -1115,3 +1115,43 @@ showReceipts();
 
 
 showNotes();
+
+function openImport(){
+
+
+    document
+    .getElementById("importFile")
+    .click();
+
+
+}
+
+
+
+function createNewService(){
+
+
+    let name =
+    prompt(
+    "Podaj nazwę serwisu:"
+    );
+
+
+    if(name){
+
+
+        database.settings.serviceName=name;
+
+
+        saveDatabase();
+
+
+        document
+        .getElementById("welcomeBox")
+        .style.display="none";
+
+
+    }
+
+
+}
