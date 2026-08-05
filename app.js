@@ -101,7 +101,6 @@ function saveDatabase(){
 // NAZWA SERWISU
 // ==========================
 
-
 function checkServiceName(){
 
 
@@ -109,15 +108,23 @@ function checkServiceName(){
 
 
         document
-        .getElementById("welcomeBox")
-        .style.display="block";
+        .getElementById("welcomeOverlay")
+        .style.display="flex";
+
+
+    }
+    else{
+
+
+        document
+        .getElementById("welcomeOverlay")
+        .style.display="none";
 
 
     }
 
 
 }
-
 
 // ==========================
 // DASHBOARD
@@ -1047,6 +1054,19 @@ function importJSON(event){
             e.target.result
         );
 
+        if(!database.settings){
+
+    database.settings={
+        serviceName:""
+    };
+
+}
+
+
+document
+.getElementById("welcomeOverlay")
+.style.display="none";
+
 
 
         saveDatabase();
@@ -1133,25 +1153,26 @@ function createNewService(){
 
     let name =
     prompt(
-    "Podaj nazwę serwisu:"
+        "Podaj nazwę serwisu:"
     );
 
 
     if(name){
 
 
-        database.settings.serviceName=name;
+        database.settings.serviceName =
+        name;
 
 
         saveDatabase();
 
 
         document
-        .getElementById("welcomeBox")
+        .getElementById("welcomeOverlay")
         .style.display="none";
 
 
     }
 
 
-}
+}h
