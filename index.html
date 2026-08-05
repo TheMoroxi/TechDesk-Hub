@@ -7,7 +7,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>TechDesk Hub v0.2.2</title>
+<title>TechDesk Hub v0.2.3</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -29,7 +29,7 @@
 
 
 <p class="version">
-v0.2.2
+v0.2.3
 </p>
 
 
@@ -64,7 +64,7 @@ v0.2.2
 
 
 <button onclick="exportJSON()">
-💾 Eksport danych
+💾 Eksport JSON
 </button>
 
 
@@ -78,7 +78,7 @@ onchange="importJSON(event)"
 
 
 <button onclick="document.getElementById('importFile').click()">
-📂 Import danych
+📂 Import JSON
 </button>
 
 
@@ -163,7 +163,6 @@ Notatki
 </div>
 
 
-
 </div>
 
 
@@ -197,15 +196,12 @@ Nowa naprawa
 placeholder="Urządzenie">
 
 
-
 <input id="client"
 placeholder="Klient">
 
 
-
 <input id="problem"
 placeholder="Problem">
-
 
 
 <select id="repairStatus">
@@ -235,10 +231,8 @@ Gotowe
 
 
 
-
 <input id="repairCost"
 placeholder="Koszt zł">
-
 
 
 <textarea id="repairNote"
@@ -278,9 +272,6 @@ Lista napraw
 
 
 </section>
-
-
-
 
 
 
@@ -366,6 +357,12 @@ Stan magazynu
 <div class="box">
 
 
+<h3>
+Nowy paragon
+</h3>
+
+
+
 <input id="receiptClient"
 placeholder="Klient">
 
@@ -377,7 +374,7 @@ placeholder="Usługa">
 
 
 <input id="receiptPrice"
-placeholder="Cena">
+placeholder="Cena zł">
 
 
 
@@ -397,7 +394,7 @@ placeholder="Cena">
 
 
 <h3>
-Historia
+Historia paragonów
 </h3>
 
 
@@ -405,14 +402,6 @@ Historia
 <div id="receiptList">
 
 </div>
-
-
-<br>
-
-
-<button onclick="printReceipts()">
-🖨 Drukuj / PDF
-</button>
 
 
 
