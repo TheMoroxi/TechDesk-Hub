@@ -690,3 +690,105 @@ function importJSON(event){
 
 
 }
+
+// ==========================
+// DRUKOWANIE PARAGONÓW
+// ==========================
+
+function printReceipts(){
+
+    let content = `
+    <html>
+    <head>
+    <title>TechDesk Hub - Paragony</title>
+
+    <style>
+
+    body{
+        font-family: Arial;
+        padding:20px;
+    }
+
+    .receipt{
+        border:1px solid #000;
+        padding:15px;
+        margin-bottom:20px;
+    }
+
+    </style>
+
+    </head>
+
+    <body>
+
+
+    <h1>
+    🔧 TechDesk Hub
+    </h1>
+
+
+    <h2>
+    Lista paragonów
+    </h2>
+    `;
+
+
+
+    database.receipts.forEach((r,index)=>{
+
+
+        content += `
+
+        <div class="receipt">
+
+        <h3>
+        Paragon #${index+1}
+        </h3>
+
+
+        Klient:
+        ${r.client}
+        <br>
+
+
+        Usługa:
+        ${r.service}
+        <br>
+
+
+        Cena:
+        ${r.price} zł
+
+
+        </div>
+
+        `;
+
+
+    });
+
+
+
+    content += `
+
+    </body>
+    </html>
+
+    `;
+
+
+
+    let win =
+    window.open("","_blank");
+
+
+    win.document.write(content);
+
+
+    win.document.close();
+
+
+    win.print();
+
+
+}
