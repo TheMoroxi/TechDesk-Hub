@@ -2,10 +2,12 @@
 <html lang="pl">
 
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>TechDesk Hub v0.2.1</title>
+<title>TechDesk Hub v0.2.2</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -18,17 +20,18 @@
 <div class="app">
 
 
-<!-- MENU BOCZNE -->
-
 <aside class="sidebar">
+
 
 <h2>
 🔧 TechDesk Hub
 </h2>
 
+
 <p class="version">
-v0.2.1
+v0.2.2
 </p>
+
 
 
 <button onclick="showPage('dashboard')">
@@ -56,6 +59,7 @@ v0.2.1
 </button>
 
 
+
 <div class="bottom">
 ⚙ Ustawienia
 </div>
@@ -67,10 +71,9 @@ v0.2.1
 
 
 
-<!-- GŁÓWNA CZĘŚĆ -->
-
-
 <main class="content">
+
+
 
 
 
@@ -126,6 +129,21 @@ Paragony
 </div>
 
 
+
+<div class="card">
+
+<h2 id="noteCount">
+0
+</h2>
+
+<p>
+Notatki
+</p>
+
+</div>
+
+
+
 </div>
 
 
@@ -145,33 +163,48 @@ Paragony
 </h1>
 
 
+
 <div class="box">
 
 
 <h3>
-Dodaj naprawę
+Nowa naprawa
 </h3>
 
 
-<input placeholder="Urządzenie">
+
+<input id="device"
+placeholder="Urządzenie">
 
 
-<input placeholder="Problem">
+
+<input id="client"
+placeholder="Klient">
 
 
-<select>
+
+<input id="problem"
+placeholder="Problem">
+
+
+
+<select id="repairStatus">
+
 
 <option>
 Nowe
 </option>
 
+
 <option>
 Diagnoza
 </option>
 
+
 <option>
 Naprawa
 </option>
+
 
 <option>
 Gotowe
@@ -181,31 +214,52 @@ Gotowe
 </select>
 
 
-<button>
-Zapisz
+
+
+<input id="repairCost"
+placeholder="Koszt zł">
+
+
+
+<textarea id="repairNote"
+placeholder="Notatka techniczna">
+</textarea>
+
+
+
+<button onclick="addRepair()">
+💾 Zapisz naprawę
 </button>
+
 
 
 </div>
 
 
 
+
+
 <div class="box">
+
 
 <h3>
 Lista napraw
 </h3>
 
 
-<p>
-Brak zapisanych napraw
-</p>
+
+<div id="repairList">
+
+</div>
+
 
 
 </div>
 
 
+
 </section>
+
 
 
 
@@ -222,23 +276,57 @@ Brak zapisanych napraw
 </h1>
 
 
+
 <div class="box">
 
 
 <h3>
-Części
+Dodaj część
 </h3>
 
 
-<p>
-Magazyn zostanie dodany w kolejnej wersji.
-</p>
+<input id="partName"
+placeholder="Nazwa części">
+
+
+
+<input id="partCount"
+placeholder="Ilość">
+
+
+
+<button onclick="addPart()">
+➕ Dodaj
+</button>
+
 
 
 </div>
 
 
+
+
+<div class="box">
+
+
+<h3>
+Stan magazynu
+</h3>
+
+
+
+<div id="inventoryList">
+
+</div>
+
+
+
+</div>
+
+
+
 </section>
+
 
 
 
@@ -255,16 +343,58 @@ Magazyn zostanie dodany w kolejnej wersji.
 </h1>
 
 
+
 <div class="box">
 
-<p>
-Moduł paragonów — przygotowany.
-</p>
+
+<input id="receiptClient"
+placeholder="Klient">
+
+
+
+<input id="receiptService"
+placeholder="Usługa">
+
+
+
+<input id="receiptPrice"
+placeholder="Cena">
+
+
+
+<button onclick="addReceipt()">
+➕ Dodaj paragon
+</button>
+
+
 
 </div>
 
 
+
+
+
+<div class="box">
+
+
+<h3>
+Historia
+</h3>
+
+
+
+<div id="receiptList">
+
+</div>
+
+
+
+</div>
+
+
+
 </section>
+
 
 
 
@@ -281,16 +411,49 @@ Moduł paragonów — przygotowany.
 </h1>
 
 
+
 <div class="box">
 
-<p>
-System notatek — przygotowany.
-</p>
+
+<textarea id="noteText"
+placeholder="Treść notatki">
+</textarea>
+
+
+
+<button onclick="addNote()">
+💾 Zapisz
+</button>
+
+
 
 </div>
 
 
+
+
+
+<div class="box">
+
+
+<h3>
+Lista notatek
+</h3>
+
+
+
+<div id="notesList">
+
+</div>
+
+
+
+</div>
+
+
+
 </section>
+
 
 
 
@@ -306,17 +469,18 @@ System notatek — przygotowany.
 
 
 
+<script src="app.js"></script>
+
+
 <script>
 
 
 function showPage(page){
 
 
-let pages =
-document.querySelectorAll(".page");
-
-
-pages.forEach(
+document
+.querySelectorAll(".page")
+.forEach(
 p=>p.classList.remove("active")
 );
 
@@ -330,8 +494,8 @@ document
 }
 
 
-
 </script>
+
 
 
 </body>
