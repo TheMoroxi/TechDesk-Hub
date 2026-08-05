@@ -1,15 +1,12 @@
 let repairs =
-JSON.parse(
-localStorage.getItem("repairs")
-)
+JSON.parse(localStorage.getItem("repairs"))
 ||
 [];
 
 
 
 
-
-function save(){
+function saveData(){
 
 localStorage.setItem(
 "repairs",
@@ -27,24 +24,53 @@ JSON.stringify(repairs)
 function addRepair(){
 
 
-let device =
-document.getElementById("device").value;
+let repair = {
+
+
+id: Date.now(),
+
+
+device:
+document.getElementById("device").value,
+
+
+client:
+document.getElementById("client").value,
+
+
+phone:
+document.getElementById("phone").value,
+
+
+problem:
+document.getElementById("problem").value,
+
+
+status:
+document.getElementById("status").value,
+
+
+cost:
+document.getElementById("cost").value,
+
+
+note:
+document.getElementById("note").value,
+
+
+date:
+new Date().toLocaleDateString()
 
 
 
-let problem =
-document.getElementById("problem").value;
+};
 
 
 
-let status =
-document.getElementById("repairStatus").value;
 
+if(!repair.device || !repair.problem){
 
-
-if(device==="" || problem===""){
-
-alert("Uzupełnij dane");
+alert("Podaj urządzenie i problem");
 
 return;
 
@@ -53,50 +79,16 @@ return;
 
 
 
-
-let repair={
-
-
-id:Date.now(),
-
-
-device:device,
-
-
-problem:problem,
-
-
-status:status,
-
-
-date:
-new Date()
-.toLocaleDateString()
-
-
-};
-
-
-
-
-
 repairs.push(repair);
 
 
-
-save();
-
+saveData();
 
 
-render();
+clearForm();
 
 
-
-
-
-document.getElementById("device").value="";
-
-document.getElementById("problem").value="";
+renderRepairs();
 
 
 }
@@ -107,20 +99,40 @@ document.getElementById("problem").value="";
 
 
 
-function removeRepair(id){
+function clearForm(){
+
+
+document.querySelectorAll(
+".repair-form input, .repair-form textarea"
+)
+.forEach(
+element=>element.value=""
+);
+
+
+}
+
+
+
+
+
+
+
+
+function deleteRepair(id){
 
 
 repairs =
 repairs.filter(
-item=>item.id!==id
+repair=>repair.id!==id
 );
 
 
 
-save();
+saveData();
 
 
-render();
+renderRepairs();
 
 
 }
@@ -131,7 +143,8 @@ render();
 
 
 
-function render(){
+
+function renderRepairs(){
 
 
 let list =
@@ -141,17 +154,10 @@ document.getElementById(
 
 
 
-let counter =
+let search =
 document.getElementById(
-"repairCount"
-);
-
-
-
-counter.innerHTML =
-repairs.length+
-" aktywnych";
-
+"search"
+).value.toLowerCase();
 
 
 
@@ -160,44 +166,90 @@ list.innerHTML="";
 
 
 
-repairs.forEach(item=>{
+let filtered =
+repairs.filter(
+repair=>
+
+repair.device.toLowerCase()
+.includes(search)
+
+||
+repair.client.toLowerCase()
+.includes(search)
+
+);
+
+
+
+
+
+filtered.forEach(repair=>{
+
 
 
 list.innerHTML += `
+
 
 <div class="repair-item">
 
 
 <h3>
-🔧 ${item.device}
+📱 ${repair.device}
 </h3>
 
 
+
 <p>
-<strong>Problem:</strong>
-${item.problem}
+👤 ${repair.client}
 </p>
 
 
 
 <p>
-<strong>Status:</strong>
-${item.status}
+☎ ${repair.phone}
+</p>
+
+
+
+<p>
+⚠ ${repair.problem}
+</p>
+
+
+
+<p>
+Status:
+<b>${repair.status}</b>
+</p>
+
+
+
+<p>
+💰 ${repair.cost || 0} zł
+</p>
+
+
+
+<p>
+📝 ${repair.note}
 </p>
 
 
 
 <small>
-${item.date}
+Dodano:
+${repair.date}
 </small>
+
 
 
 <br><br>
 
 
+
 <button 
 class="delete"
-onclick="removeRepair(${item.id})">
+onclick="deleteRepair(${repair.id})">
 
 🗑 Usuń
 
@@ -206,10 +258,17 @@ onclick="removeRepair(${item.id})">
 
 </div>
 
+
 `;
 
 
+
 });
+
+
+
+
+updateStats();
 
 
 }
@@ -219,4 +278,23 @@ onclick="removeRepair(${item.id})">
 
 
 
-render();
+
+
+
+function updateStats(){
+
+
+document.getElementById(
+"repairCount"
+).innerText =
+repairs.length;
+
+
+
+}
+
+
+
+
+
+renderRepairs();
