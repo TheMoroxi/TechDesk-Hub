@@ -1,4 +1,6 @@
-/*
+alert("TechDesk Hub działa");
+
+/*. 
 TechDesk Hub
 app.js v0.2.2
 */
