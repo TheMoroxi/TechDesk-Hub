@@ -481,39 +481,33 @@ Lista notatek
 
 </div>
   
-<div id="welcomeBox" style="
-display:none;
-position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-background:white;
-padding:30px;
-border:2px solid black;
-z-index:999;
-">
+<div id="welcomeOverlay">
 
-<h2>
-Witaj w TechDesk Hub
-</h2>
+    <div id="welcomeBox">
 
-<p>
-Wybierz opcję:
-</p>
+        <h2>
+        🔧 TechDesk Hub
+        </h2>
 
 
-<button onclick="openImport()">
-📂 Importuj backup
-</button>
+        <p>
+        Witaj! Wybierz sposób uruchomienia:
+        </p>
 
 
-<button onclick="createNewService()">
-⚙ Nowy serwis
-</button>
+        <button onclick="openImport()">
+        📂 Importuj backup
+        </button>
 
+
+        <button onclick="createNewService()">
+        ⚙ Nowy serwis
+        </button>
+
+
+    </div>
 
 </div>
-
 
 
 
