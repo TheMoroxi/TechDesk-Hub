@@ -108,10 +108,30 @@ function checkServiceName(){
     if(database.settings.serviceName===""){
 
 
+        let choice = confirm(
+        "Witaj w TechDesk Hub!\n\n" +
+        "Czy chcesz importować istniejącą kopię zapasową?"
+        );
+
+
+        if(choice){
+
+
+            document
+            .getElementById("importFile")
+            .click();
+
+
+            return;
+
+
+        }
+
+
 
         let name =
         prompt(
-            "Podaj nazwę serwisu:"
+        "Podaj nazwę serwisu:"
         );
 
 
@@ -133,9 +153,6 @@ function checkServiceName(){
 
 
 }
-
-
-
 
 
 // ==========================
