@@ -1,8 +1,6 @@
-alert("TechDesk Hub działa");
-
-/*. 
+/*
 TechDesk Hub
-app.js v0.2.2
+app.js v0.2.3
 */
 
 
@@ -12,28 +10,42 @@ app.js v0.2.2
 
 let database = {
 
-    repairs: [],
-    inventory: [],
-    receipts: [],
-    notes: []
+    settings:{
+        serviceName:""
+    },
+
+    repairs:[],
+    inventory:[],
+    receipts:[],
+    notes:[]
 
 };
 
 
 
 // ==========================
-// ZAPIS / ODCZYT
+// LOAD / SAVE
 // ==========================
 
 
 function loadDatabase(){
 
-    let saved = localStorage.getItem("techdesk_database");
+    let saved =
+    localStorage.getItem("techdesk_database");
 
 
     if(saved){
 
         database = JSON.parse(saved);
+
+    }
+
+
+    if(!database.settings){
+
+        database.settings={
+            serviceName:""
+        };
 
     }
 
@@ -53,6 +65,42 @@ function saveDatabase(){
 
 
 // ==========================
+// NAZWA SERWISU
+// ==========================
+
+
+function checkServiceName(){
+
+
+    if(database.settings.serviceName === ""){
+
+
+        let name = prompt(
+            "Podaj nazwę serwisu:"
+        );
+
+
+        if(name){
+
+
+            database.settings.serviceName =
+            name;
+
+
+            saveDatabase();
+
+
+        }
+
+
+    }
+
+
+}
+
+
+
+// ==========================
 // DASHBOARD
 // ==========================
 
@@ -64,15 +112,12 @@ function updateDashboard(){
     database.repairs.length;
 
 
-
     document.getElementById("partsCount").innerText =
     database.inventory.length;
 
 
-
     document.getElementById("receiptCount").innerText =
     database.receipts.length;
-
 
 
     document.getElementById("noteCount").innerText =
@@ -93,9 +138,9 @@ function showPage(page){
 
     document
     .querySelectorAll(".page")
-    .forEach(item=>{
+    .forEach(p=>{
 
-        item.classList.remove("active");
+        p.classList.remove("active");
 
     });
 
@@ -105,13 +150,11 @@ function showPage(page){
     document.getElementById(page);
 
 
-
     if(selected){
 
         selected.classList.add("active");
 
     }
-
 
 }
 
@@ -125,39 +168,27 @@ function showPage(page){
 function addRepair(){
 
 
-    let repair = {
-
+    database.repairs.push({
 
         device:
-        document.getElementById("device").value,
-
+        device.value,
 
         client:
-        document.getElementById("client").value,
-
+        client.value,
 
         problem:
-        document.getElementById("problem").value,
-
+        problem.value,
 
         status:
-        document.getElementById("repairStatus").value,
-
+        repairStatus.value,
 
         cost:
-        document.getElementById("repairCost").value,
-
+        repairCost.value,
 
         note:
-        document.getElementById("repairNote").value
+        repairNote.value
 
-
-    };
-
-
-
-    database.repairs.push(repair);
-
+    });
 
 
     saveDatabase();
@@ -166,29 +197,20 @@ function addRepair(){
 
     updateDashboard();
 
-
 }
-
-
 
 
 
 function showRepairs(){
 
 
-    let list =
-    document.getElementById("repairList");
+    repairList.innerHTML="";
 
 
-
-    list.innerHTML="";
-
+    database.repairs.forEach((r,i)=>{
 
 
-    database.repairs.forEach((r,index)=>{
-
-
-        list.innerHTML += `
+        repairList.innerHTML += `
 
         <div class="item">
 
@@ -200,13 +222,10 @@ function showRepairs(){
 
         Status: ${r.status}<br>
 
-        Koszt: ${r.cost} zł<br>
+        Cena: ${r.cost} zł<br>
 
-        ${r.note}
 
-        <br>
-
-        <button onclick="deleteRepair(${index})">
+        <button onclick="deleteRepair(${i})">
         ❌ Usuń
         </button>
 
@@ -222,18 +241,15 @@ function showRepairs(){
 
 
 
-function deleteRepair(index){
+function deleteRepair(i){
 
-
-    database.repairs.splice(index,1);
-
+    database.repairs.splice(i,1);
 
     saveDatabase();
 
     showRepairs();
 
     updateDashboard();
-
 
 }
 
@@ -247,61 +263,45 @@ function deleteRepair(index){
 function addPart(){
 
 
-    let part = {
-
+    database.inventory.push({
 
         name:
-        document.getElementById("partName").value,
-
+        partName.value,
 
         count:
-        document.getElementById("partCount").value
+        partCount.value
 
-
-    };
-
-
-    database.inventory.push(part);
+    });
 
 
     saveDatabase();
-
 
     showInventory();
 
     updateDashboard();
 
-
 }
-
-
 
 
 
 function showInventory(){
 
 
-    let list =
-    document.getElementById("inventoryList");
+    inventoryList.innerHTML="";
 
 
-    list.innerHTML="";
+    database.inventory.forEach((p,i)=>{
 
 
-
-    database.inventory.forEach((p,index)=>{
-
-
-        list.innerHTML += `
+        inventoryList.innerHTML += `
 
         <div class="item">
 
         📦 ${p.name}
-
         Ilość: ${p.count}
 
 
-        <button onclick="deletePart(${index})">
+        <button onclick="deletePart(${i})">
         ❌
         </button>
 
@@ -318,18 +318,15 @@ function showInventory(){
 
 
 
-function deletePart(index){
+function deletePart(i){
 
-
-    database.inventory.splice(index,1);
-
+    database.inventory.splice(i,1);
 
     saveDatabase();
 
     showInventory();
 
     updateDashboard();
-
 
 }
 
@@ -343,31 +340,21 @@ function deletePart(index){
 function addReceipt(){
 
 
-    let receipt = {
-
+    database.receipts.push({
 
         client:
-        document.getElementById("receiptClient").value,
-
+        receiptClient.value,
 
         service:
-        document.getElementById("receiptService").value,
-
+        receiptService.value,
 
         price:
-        document.getElementById("receiptPrice").value
+        receiptPrice.value
 
-
-    };
-
-
-
-    database.receipts.push(receipt);
-
+    });
 
 
     saveDatabase();
-
 
     showReceipts();
 
@@ -382,32 +369,29 @@ function addReceipt(){
 function showReceipts(){
 
 
-    let list =
-    document.getElementById("receiptList");
+    receiptList.innerHTML="";
 
 
-    list.innerHTML="";
+    database.receipts.forEach((r,i)=>{
 
 
-
-    database.receipts.forEach((r,index)=>{
-
-
-        list.innerHTML += `
+        receiptList.innerHTML += `
 
         <div class="item">
 
-        Klient: ${r.client}<br>
+        Klient:
+        ${r.client}<br>
 
-        Usługa: ${r.service}<br>
+        Usługa:
+        ${r.service}<br>
 
-        Cena: ${r.price} zł
+        Cena:
+        ${r.price} zł
 
 
-        <button onclick="deleteReceipt(${index})">
+        <button onclick="deleteReceipt(${i})">
         ❌
         </button>
-
 
         </div>
 
@@ -421,19 +405,15 @@ function showReceipts(){
 
 
 
+function deleteReceipt(i){
 
-function deleteReceipt(index){
-
-
-    database.receipts.splice(index,1);
-
+    database.receipts.splice(i,1);
 
     saveDatabase();
 
     showReceipts();
 
     updateDashboard();
-
 
 }
 
@@ -447,56 +427,42 @@ function deleteReceipt(index){
 function addNote(){
 
 
-    let text =
-    document.getElementById("noteText").value;
+    if(noteText.value==="")
+    return;
 
 
-
-    if(text==="") return;
-
-
-
-    database.notes.push(text);
-
+    database.notes.push(
+        noteText.value
+    );
 
 
     saveDatabase();
-
-
 
     showNotes();
 
     updateDashboard();
 
-
 }
-
-
 
 
 
 function showNotes(){
 
 
-    let list =
-    document.getElementById("notesList");
+    notesList.innerHTML="";
 
 
-    list.innerHTML="";
+    database.notes.forEach((n,i)=>{
 
 
-
-    database.notes.forEach((n,index)=>{
-
-
-        list.innerHTML += `
+        notesList.innerHTML += `
 
         <div class="item">
 
         📝 ${n}
 
 
-        <button onclick="deleteNote(${index})">
+        <button onclick="deleteNote(${i})">
         ❌
         </button>
 
@@ -513,11 +479,9 @@ function showNotes(){
 
 
 
-function deleteNote(index){
+function deleteNote(i){
 
-
-    database.notes.splice(index,1);
-
+    database.notes.splice(i,1);
 
     saveDatabase();
 
@@ -525,220 +489,62 @@ function deleteNote(index){
 
     updateDashboard();
 
-
 }
 
 
 
 // ==========================
-// START
+// DRUK PDF
 // ==========================
 
-
-loadDatabase();
-
-updateDashboard();
-
-showRepairs();
-
-showInventory();
-
-showReceipts();
-
-showNotes();
-
-// ==========================
-// EKSPORT JSON
-// ==========================
-
-function exportJSON(){
-
-    let data = JSON.stringify(
-        database,
-        null,
-        4
-    );
-
-
-    let blob = new Blob(
-        [data],
-        {
-            type: "application/json"
-        }
-    );
-
-
-    let url = URL.createObjectURL(blob);
-
-
-    let link = document.createElement("a");
-
-    link.href = url;
-
-    link.download =
-    "TechDesk_Hub_backup.json";
-
-
-    document.body.appendChild(link);
-
-
-    link.click();
-
-
-    document.body.removeChild(link);
-
-
-    URL.revokeObjectURL(url);
-
-
-}
-
-// ==========================
-// IMPORT JSON
-// ==========================
-
-function importJSON(event){
-
-
-    let file =
-    event.target.files[0];
-
-
-    if(!file){
-        return;
-    }
-
-
-
-    let reader =
-    new FileReader();
-
-
-
-    reader.onload = function(e){
-
-
-        try{
-
-
-            let imported =
-            JSON.parse(e.target.result);
-
-
-
-            if(
-                imported.repairs &&
-                imported.inventory &&
-                imported.receipts &&
-                imported.notes
-            ){
-
-
-                database = imported;
-
-
-                saveDatabase();
-
-
-                updateDashboard();
-
-
-                showRepairs();
-
-                showInventory();
-
-                showReceipts();
-
-                showNotes();
-
-
-
-                alert(
-                "✅ Kopia TechDesk Hub została przywrócona!"
-                );
-
-
-            }
-            else{
-
-
-                alert(
-                "❌ Nieprawidłowy plik kopii zapasowej"
-                );
-
-
-            }
-
-
-        }
-        catch(error){
-
-
-            alert(
-            "❌ Błąd odczytu pliku JSON"
-            );
-
-
-        }
-
-
-    };
-
-
-
-    reader.readAsText(file);
-
-
-}
-
-// ==========================
-// DRUKOWANIE PARAGONÓW / PDF
-// ==========================
 
 function printReceipts(){
 
-    if(database.receipts.length === 0){
 
-        alert("Brak paragonów do wydruku");
+    if(database.receipts.length===0){
+
+        alert("Brak paragonów");
+
         return;
 
     }
 
 
-    let printWindow = window.open("", "_blank");
+
+    let win =
+    window.open("","_blank");
+
 
 
     let html = `
 
-    <!DOCTYPE html>
-    <html lang="pl">
+    <html>
 
     <head>
 
-    <meta charset="UTF-8">
+    <title>
+    ${database.settings.serviceName}
+    </title>
 
-    <title>TechDesk Hub - Paragon</title>
 
     <style>
 
     body{
-        font-family: Arial, sans-serif;
-        padding: 30px;
+        font-family:Arial;
+        padding:30px;
     }
 
-    h1{
-        text-align:center;
-    }
 
     .receipt{
 
         border:1px solid black;
         padding:20px;
-        margin-bottom:20px;
+        margin:20px;
 
     }
 
     </style>
+
 
     </head>
 
@@ -747,7 +553,7 @@ function printReceipts(){
 
 
     <h1>
-    🔧 TechDesk Hub
+    ${database.settings.serviceName}
     </h1>
 
 
@@ -758,7 +564,8 @@ function printReceipts(){
     `;
 
 
-    database.receipts.forEach((r,index)=>{
+
+    database.receipts.forEach((r,i)=>{
 
 
         html += `
@@ -766,26 +573,23 @@ function printReceipts(){
         <div class="receipt">
 
         <h3>
-        Paragon #${index + 1}
+        Paragon #${i+1}
         </h3>
 
 
-        <b>Klient:</b>
-        ${r.client}
-        <br><br>
+        Klient:
+        ${r.client}<br><br>
 
 
-        <b>Usługa:</b>
-        ${r.service}
-        <br><br>
+        Usługa:
+        ${r.service}<br><br>
 
 
-        <b>Cena:</b>
+        Cena:
         ${r.price} zł
 
 
         </div>
-
 
         `;
 
@@ -804,19 +608,75 @@ function printReceipts(){
 
 
 
-    printWindow.document.open();
+    win.document.write(html);
 
-    printWindow.document.write(html);
-
-    printWindow.document.close();
-
+    win.document.close();
 
 
     setTimeout(()=>{
 
-        printWindow.print();
+        win.print();
 
     },500);
 
 
 }
+
+
+
+// ==========================
+// EKSPORT JSON
+// ==========================
+
+
+function exportJSON(){
+
+
+    let blob =
+    new Blob(
+        [
+            JSON.stringify(database,null,4)
+        ],
+        {
+            type:"application/json"
+        }
+    );
+
+
+    let link =
+    document.createElement("a");
+
+
+    link.href =
+    URL.createObjectURL(blob);
+
+
+    link.download =
+    "TechDesk_Hub_backup.json";
+
+
+    link.click();
+
+
+}
+
+
+
+// ==========================
+// START
+// ==========================
+
+
+loadDatabase();
+
+checkServiceName();
+
+updateDashboard();
+
+showRepairs();
+
+showInventory();
+
+showReceipts();
+
+showNotes();
