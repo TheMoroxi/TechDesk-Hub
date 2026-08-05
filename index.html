@@ -7,7 +7,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>TechDesk Hub v0.2.2.1</title>
+<title>TechDesk Hub v0.2.2</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -29,7 +29,7 @@
 
 
 <p class="version">
-v0.2.2.1
+v0.2.2
 </p>
 
 
@@ -58,14 +58,14 @@ v0.2.2.1
 📝 Notatki
 </button>
 
-  <div class="bottom">
+
+
+<div class="bottom">
+
 
 <button onclick="exportJSON()">
 💾 Eksport danych
 </button>
-
-
-<br>
 
 
 <input 
@@ -83,6 +83,8 @@ onchange="importJSON(event)"
 
 
 </div>
+
+
 </aside>
 
 
@@ -403,6 +405,14 @@ Historia
 <div id="receiptList">
 
 </div>
+
+
+<br>
+
+
+<button onclick="printReceipts()">
+🖨 Drukuj / PDF
+</button>
 
 
 
