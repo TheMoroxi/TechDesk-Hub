@@ -692,32 +692,56 @@ function importJSON(event){
 }
 
 // ==========================
-// DRUKOWANIE PARAGONÓW
+// DRUKOWANIE PARAGONÓW / PDF
 // ==========================
 
 function printReceipts(){
 
-    let content = `
-    <html>
+    if(database.receipts.length === 0){
+
+        alert("Brak paragonów do wydruku");
+        return;
+
+    }
+
+
+    let printWindow = window.open("", "_blank");
+
+
+    let html = `
+
+    <!DOCTYPE html>
+    <html lang="pl">
+
     <head>
-    <title>TechDesk Hub - Paragony</title>
+
+    <meta charset="UTF-8">
+
+    <title>TechDesk Hub - Paragon</title>
 
     <style>
 
     body{
-        font-family: Arial;
-        padding:20px;
+        font-family: Arial, sans-serif;
+        padding: 30px;
+    }
+
+    h1{
+        text-align:center;
     }
 
     .receipt{
-        border:1px solid #000;
-        padding:15px;
+
+        border:1px solid black;
+        padding:20px;
         margin-bottom:20px;
+
     }
 
     </style>
 
     </head>
+
 
     <body>
 
@@ -728,39 +752,40 @@ function printReceipts(){
 
 
     <h2>
-    Lista paragonów
+    Paragony
     </h2>
-    `;
 
+    `;
 
 
     database.receipts.forEach((r,index)=>{
 
 
-        content += `
+        html += `
 
         <div class="receipt">
 
         <h3>
-        Paragon #${index+1}
+        Paragon #${index + 1}
         </h3>
 
 
-        Klient:
+        <b>Klient:</b>
         ${r.client}
-        <br>
+        <br><br>
 
 
-        Usługa:
+        <b>Usługa:</b>
         ${r.service}
-        <br>
+        <br><br>
 
 
-        Cena:
+        <b>Cena:</b>
         ${r.price} zł
 
 
         </div>
+
 
         `;
 
@@ -769,26 +794,29 @@ function printReceipts(){
 
 
 
-    content += `
+    html += `
 
     </body>
+
     </html>
 
     `;
 
 
 
-    let win =
-    window.open("","_blank");
+    printWindow.document.open();
+
+    printWindow.document.write(html);
+
+    printWindow.document.close();
 
 
-    win.document.write(content);
 
+    setTimeout(()=>{
 
-    win.document.close();
+        printWindow.print();
 
-
-    win.print();
+    },500);
 
 
 }
