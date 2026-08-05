@@ -1,122 +1,242 @@
 <!DOCTYPE html>
 <html lang="pl">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechDesk Hub</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TechDesk Hub</title>
+
+<link rel="stylesheet" href="style.css">
+
 </head>
+
 
 <body>
 
+
 <div class="app">
 
-    <header>
-        <div class="logo">
-            🔧 <span>TechDesk Hub</span>
-        </div>
 
-        <button class="settings">
-            ⚙ Ustawienia
-        </button>
-    </header>
+<header>
+
+    <div class="logo">
+        🔧 TechDesk Hub
+    </div>
 
 
-    <section class="hero">
-        <h1>TECHDESK HUB</h1>
-        <p>Technician Workspace</p>
+    <button>
+        ⚙ Ustawienia
+    </button>
 
-        <div class="status">
-            <span></span> SYSTEM ONLINE
-        </div>
-    </section>
-
-
-    <section class="cards">
-
-        <div class="card">
-            <div class="icon">🔧</div>
-            <h2>Naprawy</h2>
-            <p>12 aktywnych</p>
-        </div>
-
-
-        <div class="card">
-            <div class="icon">📦</div>
-            <h2>Części</h2>
-            <p>843 elementy</p>
-        </div>
-
-
-        <div class="card">
-            <div class="icon">📝</div>
-            <h2>Notatki</h2>
-            <p>57 zapisów</p>
-        </div>
-
-    </section>
+</header>
 
 
 
-    <section class="panel">
+<section class="hero">
 
-        <h2>⚡ Quick Actions</h2>
+    <h1>TECHDESK HUB</h1>
 
-        <div class="buttons">
+    <p>
+        Technician Workspace
+    </p>
 
-            <button>
-                ➕ Nowa naprawa
-            </button>
 
-            <button>
-                📦 Dodaj część
-            </button>
+    <div class="status">
+        <span></span>
+        SYSTEM ONLINE
+    </div>
 
-            <button>
-                ⚡ Kalkulatory
-            </button>
 
-            <button>
-                📄 Raport
-            </button>
-
-        </div>
-
-    </section>
+</section>
 
 
 
-    <section class="panel">
 
-        <h2>📋 Ostatnie działania</h2>
+<section class="cards">
 
-        <div class="activity">
 
-            <p>
-                ✅ Wymiana USB-C Samsung A52
-            </p>
+<div class="card">
 
-            <p>
-                ✅ Dodano ESP32 x5
-            </p>
+    <div class="icon">🔧</div>
 
-            <p>
-                ⚠ Oczekuje na część #0421
-            </p>
+    <h2>Naprawy</h2>
 
-        </div>
+    <p id="repairCount">
+        0 aktywnych
+    </p>
 
-    </section>
+</div>
 
 
 
-    <footer>
-        TechDesk Hub v0.1 • Local Technician System
-    </footer>
+<div class="card">
+
+    <div class="icon">📦</div>
+
+    <h2>Części</h2>
+
+    <p>
+        843 elementy
+    </p>
+
+</div>
+
+
+
+
+<div class="card">
+
+    <div class="icon">📝</div>
+
+    <h2>Notatki</h2>
+
+    <p>
+        57 zapisów
+    </p>
+
+</div>
+
+
+</section>
+
+
+
+
+
+<section class="panel">
+
+
+<h2>
+🔧 Repair Manager
+</h2>
+
+
+
+<div class="repair-form">
+
+
+<input 
+id="device"
+placeholder="Urządzenie np. iPhone 13"
+>
+
+
+
+<input
+id="problem"
+placeholder="Problem np. brak ładowania"
+>
+
+
+
+<select id="repairStatus">
+
+
+<option>
+Nowe
+</option>
+
+<option>
+Diagnoza
+</option>
+
+<option>
+Naprawa
+</option>
+
+<option>
+Gotowe
+</option>
+
+
+</select>
+
+
+
+<button onclick="addRepair()">
+
+➕ Dodaj naprawę
+
+</button>
+
 
 
 </div>
 
 
+
+
+<div id="repairList">
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+<section class="panel">
+
+
+<h2>
+⚡ Quick Actions
+</h2>
+
+
+
+<div class="buttons">
+
+
+<button>
+📦 Magazyn
+</button>
+
+
+<button>
+⚡ Kalkulatory
+</button>
+
+
+<button>
+📄 Raporty
+</button>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+<footer>
+
+TechDesk Hub v0.1
+<br>
+Local Technician System
+
+</footer>
+
+
+
+</div>
+
+
+
+
+<script src="app.js"></script>
+
+
 </body>
+
 </html>
