@@ -2,6 +2,7 @@
 <html lang="pl">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -20,14 +21,13 @@
 
 <header>
 
-    <div class="logo">
-        🔧 TechDesk Hub
-    </div>
+<div class="logo">
+🔧 TechDesk Hub
+</div>
 
-
-    <button>
-        ⚙ Ustawienia
-    </button>
+<button>
+⚙
+</button>
 
 </header>
 
@@ -35,20 +35,23 @@
 
 <section class="hero">
 
-    <h1>TECHDESK HUB</h1>
+<h1>TECHDESK HUB</h1>
 
-    <p>
-        Technician Workspace
-    </p>
+<p>
+Technician Workspace v0.2
+</p>
 
 
-    <div class="status">
-        <span></span>
-        SYSTEM ONLINE
-    </div>
+<div class="status">
 
+<span></span>
+
+SYSTEM ONLINE
+
+</div>
 
 </section>
+
 
 
 
@@ -58,13 +61,15 @@
 
 <div class="card">
 
-    <div class="icon">🔧</div>
+<div class="icon">
+🔧
+</div>
 
-    <h2>Naprawy</h2>
+<h2>Naprawy</h2>
 
-    <p id="repairCount">
-        0 aktywnych
-    </p>
+<p id="repairCount">
+0
+</p>
 
 </div>
 
@@ -72,28 +77,31 @@
 
 <div class="card">
 
-    <div class="icon">📦</div>
+<div class="icon">
+📦
+</div>
 
-    <h2>Części</h2>
+<h2>Części</h2>
 
-    <p>
-        843 elementy
-    </p>
+<p id="partsCount">
+0
+</p>
 
 </div>
 
 
 
-
 <div class="card">
 
-    <div class="icon">📝</div>
+<div class="icon">
+📝
+</div>
 
-    <h2>Notatki</h2>
+<h2>Notatki</h2>
 
-    <p>
-        57 zapisów
-    </p>
+<p id="notesCount">
+0
+</p>
 
 </div>
 
@@ -104,11 +112,13 @@
 
 
 
+
+
 <section class="panel">
 
 
 <h2>
-🔧 Repair Manager
+🔧 Nowa naprawa
 </h2>
 
 
@@ -118,20 +128,31 @@
 
 <input 
 id="device"
-placeholder="Urządzenie np. iPhone 13"
->
+placeholder="Urządzenie np. Samsung S21">
+
+
+
+<input
+id="client"
+placeholder="Klient">
+
+
+
+<input
+id="phone"
+placeholder="Telefon kontaktowy">
 
 
 
 <input
 id="problem"
-placeholder="Problem np. brak ładowania"
->
+placeholder="Problem">
 
 
 
-<select id="repairStatus">
 
+
+<select id="status">
 
 <option>
 Nowe
@@ -149,25 +170,35 @@ Naprawa
 Gotowe
 </option>
 
-
 </select>
+
+
+
+
+
+<input
+id="cost"
+type="number"
+placeholder="Koszt zł">
+
+
+
+
+
+<textarea
+id="note"
+placeholder="Notatka techniczna">
+</textarea>
+
+
 
 
 
 <button onclick="addRepair()">
 
-➕ Dodaj naprawę
+➕ Zapisz naprawę
 
 </button>
-
-
-
-</div>
-
-
-
-
-<div id="repairList">
 
 
 </div>
@@ -185,28 +216,19 @@ Gotowe
 
 
 <h2>
-⚡ Quick Actions
+📋 Lista napraw
 </h2>
 
 
 
-<div class="buttons">
+<input
+id="search"
+placeholder="🔍 Szukaj..."
+oninput="renderRepairs()">
 
 
-<button>
-📦 Magazyn
-</button>
 
-
-<button>
-⚡ Kalkulatory
-</button>
-
-
-<button>
-📄 Raporty
-</button>
-
+<div id="repairList">
 
 </div>
 
@@ -217,16 +239,11 @@ Gotowe
 
 
 
-
-
 <footer>
 
-TechDesk Hub v0.1
-<br>
-Local Technician System
+TechDesk Hub v0.2
 
 </footer>
-
 
 
 </div>
