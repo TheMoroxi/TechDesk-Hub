@@ -1,48 +1,58 @@
 /*
 TechDesk Hub
-app.js v0.2.3
+app.js v0.2.4
 */
-
 
 // ==========================
 // BAZA DANYCH
 // ==========================
 
-
 let database = {
 
+    dbVersion:"0.2.4",
 
     settings:{
-
         serviceName:""
-
     },
-
 
     repairs:[],
 
-
     inventory:[],
-
 
     receipts:[],
 
-
     notes:[]
-
 
 };
 
 
+// ==========================
+// POMOCNICZE DOM
+// ==========================
+
+function $(id){
+
+    return document.getElementById(id);
+
+}
 
 
 // ==========================
 // LOCAL STORAGE
 // ==========================
 
+function saveDatabase(){
+
+    localStorage.setItem(
+        "techdesk_database",
+        JSON.stringify(database)
+    );
+
+}
+
+
 
 function loadDatabase(){
-
 
     let saved =
     localStorage.getItem(
@@ -50,50 +60,85 @@ function loadDatabase(){
     );
 
 
-
     if(saved){
 
+        try{
 
-        database =
-        JSON.parse(saved);
+            database =
+            JSON.parse(saved);
 
+        }
+        catch{
+
+            database = {
+
+                dbVersion:"0.2.4",
+
+                settings:{
+                    serviceName:""
+                },
+
+                repairs:[],
+                inventory:[],
+                receipts:[],
+                notes:[]
+
+            };
+
+        }
 
     }
 
+
+    // migracja starszych wersji
+
+    if(!database.dbVersion){
+
+        database.dbVersion="0.2.4";
+
+    }
 
 
     if(!database.settings){
 
-
         database.settings={
-
             serviceName:""
-
         };
-
 
     }
 
 
+    if(!database.repairs){
+
+        database.repairs=[];
+
+    }
+
+
+    if(!database.inventory){
+
+        database.inventory=[];
+
+    }
+
+
+    if(!database.receipts){
+
+        database.receipts=[];
+
+    }
+
+
+    if(!database.notes){
+
+        database.notes=[];
+
+    }
+
+
+    saveDatabase();
+
 }
-
-
-
-function saveDatabase(){
-
-
-    localStorage.setItem(
-
-        "techdesk_database",
-
-        JSON.stringify(database)
-
-    );
-
-
-}
-
-
 
 
 
@@ -104,21 +149,26 @@ function saveDatabase(){
 function checkServiceName(){
 
 
+    let overlay =
+    $("welcomeOverlay");
+
+
+    if(!overlay)
+    return;
+
+
+
     if(database.settings.serviceName===""){
 
 
-        document
-        .getElementById("welcomeOverlay")
-        .style.display="flex";
+        overlay.style.display="flex";
 
 
     }
     else{
 
 
-        document
-        .getElementById("welcomeOverlay")
-        .style.display="none";
+        overlay.style.display="none";
 
 
     }
@@ -126,32 +176,42 @@ function checkServiceName(){
 
 }
 
-// ==========================
-// DASHBOARD
-// ==========================
-
-
-function updateDashboard(){
 
 
 
-    repairCount.innerText =
-    database.repairs.length;
+function createNewService(){
+
+
+    let name =
+    prompt(
+        "Podaj nazwę serwisu:"
+    );
 
 
 
-    partsCount.innerText =
-    database.inventory.length;
+    if(!name)
+    return;
 
 
 
-    receiptCount.innerText =
-    database.receipts.length;
+    database.settings.serviceName =
+    name;
 
 
 
-    noteCount.innerText =
-    database.notes.length;
+    saveDatabase();
+
+
+
+    let overlay =
+    $("welcomeOverlay");
+
+
+    if(overlay){
+
+        overlay.style.display="none";
+
+    }
 
 
 
@@ -160,6 +220,88 @@ function updateDashboard(){
 
 
 
+// ==========================
+// IMPORT BACKUP
+// ==========================
+
+function openImport(){
+
+
+    let input =
+    $("importFile");
+
+
+    if(input){
+
+        input.click();
+
+    }
+
+
+}
+
+
+
+// ==========================
+// DASHBOARD
+// ==========================
+
+function updateDashboard(){
+
+
+    let repairCount =
+    $("repairCount");
+
+
+    let partsCount =
+    $("partsCount");
+
+
+    let receiptCount =
+    $("receiptCount");
+
+
+    let noteCount =
+    $("noteCount");
+
+
+
+    if(repairCount){
+
+        repairCount.innerText =
+        database.repairs.length;
+
+    }
+
+
+
+    if(partsCount){
+
+        partsCount.innerText =
+        database.inventory.length;
+
+    }
+
+
+
+    if(receiptCount){
+
+        receiptCount.innerText =
+        database.receipts.length;
+
+    }
+
+
+
+    if(noteCount){
+
+        noteCount.innerText =
+        database.notes.length;
+
+    }
+
+
+}
 
 
 
@@ -167,102 +309,141 @@ function updateDashboard(){
 // NAWIGACJA
 // ==========================
 
-
 function showPage(page){
-
 
 
     document
     .querySelectorAll(".page")
     .forEach(p=>{
 
-
-        p.classList.remove("active");
-
+        p.classList.remove(
+            "active"
+        );
 
     });
 
 
 
     let section =
-    document.getElementById(page);
+    $(page);
 
 
 
     if(section){
 
-
-        section.classList.add("active");
-
+        section.classList.add(
+            "active"
+        );
 
     }
 
 
-
 }
 
+/*
+TechDesk Hub
+app.js v0.2.4
 
+Część 2/3
+*/
 
+// ==========================
+// BEZPIECZNE TEKSTY
+// ==========================
 
+function escapeHTML(text){
 
+    if(!text)
+    return "";
+
+    return String(text)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
 
 
 // ==========================
 // NAPRAWY
 // ==========================
 
-
-
 function addRepair(){
+
+
+    let device =
+    $("device").value.trim();
+
+
+    let client =
+    $("client").value.trim();
+
+
+    let problem =
+    $("problem").value.trim();
+
+
+    let status =
+    $("repairStatus").value;
+
+
+    let cost =
+    $("repairCost").value;
+
+
+    let note =
+    $("repairNote").value.trim();
+
+
+
+    if(device===""){
+
+        alert(
+            "Podaj urządzenie"
+        );
+
+        return;
+
+    }
 
 
 
     let repair={
 
+        id:Date.now(),
 
-        device:
-        device.value,
+        device,
 
+        client,
 
-        client:
-        client.value,
+        problem,
 
+        status,
 
-        problem:
-        problem.value,
+        cost,
 
+        note,
 
-        status:
-        repairStatus.value,
-
-
-        cost:
-        repairCost.value,
-
-
-        note:
-        repairNote.value
-
-
+        date:
+        new Date()
+        .toLocaleString("pl-PL")
 
     };
 
 
 
-
-    database.repairs.push(repair);
-
+    database.repairs.push(
+        repair
+    );
 
 
     saveDatabase();
 
-
     showRepairs();
 
-
     updateDashboard();
-
-
 
 }
 
@@ -272,80 +453,73 @@ function addRepair(){
 function showRepairs(){
 
 
-
-    repairList.innerHTML="";
-
-
-
-    database.repairs.forEach((r,i)=>{
+    let list =
+    $("repairList");
 
 
+    if(!list)
+    return;
 
-        repairList.innerHTML += `
 
+
+    list.innerHTML="";
+
+
+
+    database.repairs
+    .forEach((r,i)=>{
+
+
+        list.innerHTML += `
 
         <div class="item">
 
-
         <b>
-        ${r.device}
+        🔧 ${escapeHTML(r.device)}
         </b>
 
-
         <br>
-
 
         Klient:
-        ${r.client}
-
+        ${escapeHTML(r.client)}
 
         <br>
-
 
         Problem:
-        ${r.problem}
-
+        ${escapeHTML(r.problem)}
 
         <br>
-
 
         Status:
-        ${r.status}
-
+        ${escapeHTML(r.status)}
 
         <br>
 
-
         Cena:
-        ${r.cost} zł
+        ${escapeHTML(r.cost)} zł
 
+        <br>
 
+        Data:
+        ${escapeHTML(r.date)}
 
         <br><br>
 
 
         <button onclick="deleteRepair(${i})">
-
         ❌ Usuń
-
         </button>
-
 
 
         </div>
 
-
-
         `;
-
 
 
     });
 
 
-
 }
-
 
 
 
@@ -353,40 +527,67 @@ function showRepairs(){
 function deleteRepair(i){
 
 
+    if(
+    !confirm(
+        "Usunąć naprawę?"
+    )
+    )
+    return;
 
-    database.repairs.splice(i,1);
 
+
+    database.repairs.splice(
+        i,
+        1
+    );
 
 
     saveDatabase();
 
-
     showRepairs();
-
 
     updateDashboard();
 
 
-
 }
+
+
+
 // ==========================
 // MAGAZYN
 // ==========================
 
-
 function addPart(){
+
+
+    let name =
+    $("partName").value.trim();
+
+
+    let count =
+    $("partCount").value;
+
+
+
+    if(name===""){
+
+        alert(
+            "Podaj nazwę części"
+        );
+
+        return;
+
+    }
+
 
 
     database.inventory.push({
 
+        id:Date.now(),
 
-        name:
-        partName.value,
+        name,
 
-
-        count:
-        partCount.value
-
+        count
 
     });
 
@@ -394,9 +595,7 @@ function addPart(){
 
     saveDatabase();
 
-
     showInventory();
-
 
     updateDashboard();
 
@@ -409,29 +608,36 @@ function addPart(){
 function showInventory(){
 
 
-    inventoryList.innerHTML="";
+    let list =
+    $("inventoryList");
+
+
+    if(!list)
+    return;
 
 
 
-    database.inventory.forEach((p,i)=>{
+    list.innerHTML="";
 
 
 
-        inventoryList.innerHTML += `
+    database.inventory
+    .forEach((p,i)=>{
 
+
+        list.innerHTML += `
 
         <div class="item">
 
-
-        📦 ${p.name}
-
+        📦
+        <b>
+        ${escapeHTML(p.name)}
+        </b>
 
         <br>
 
-
         Ilość:
-        ${p.count}
-
+        ${escapeHTML(p.count)}
 
 
         <br><br>
@@ -446,13 +652,10 @@ function showInventory(){
 
         </div>
 
-
         `;
 
 
-
     });
-
 
 
 }
@@ -463,24 +666,29 @@ function showInventory(){
 function deletePart(i){
 
 
-    database.inventory.splice(i,1);
+    if(
+    !confirm(
+        "Usunąć część?"
+    )
+    )
+    return;
 
+
+
+    database.inventory.splice(
+        i,
+        1
+    );
 
 
     saveDatabase();
 
-
     showInventory();
-
 
     updateDashboard();
 
 
 }
-
-
-
-
 
 
 
@@ -488,25 +696,47 @@ function deletePart(i){
 // PARAGONY
 // ==========================
 
-
 function addReceipt(){
+
+
+    let client =
+    $("receiptClient").value.trim();
+
+
+    let service =
+    $("receiptService").value.trim();
+
+
+    let price =
+    $("receiptPrice").value;
+
+
+
+    if(service===""){
+
+        alert(
+            "Podaj usługę"
+        );
+
+        return;
+
+    }
 
 
 
     database.receipts.push({
 
+        id:Date.now(),
 
-        client:
-        receiptClient.value,
+        client,
 
+        service,
 
-        service:
-        receiptService.value,
+        price,
 
-
-        price:
-        receiptPrice.value
-
+        date:
+        new Date()
+        .toLocaleString("pl-PL")
 
     });
 
@@ -514,12 +744,9 @@ function addReceipt(){
 
     saveDatabase();
 
-
     showReceipts();
 
-
     updateDashboard();
-
 
 
 }
@@ -527,23 +754,27 @@ function addReceipt(){
 
 
 
-
-
-
 function showReceipts(){
 
 
-
-    receiptList.innerHTML="";
-
-
-
-    database.receipts.forEach((r,i)=>{
+    let list =
+    $("receiptList");
 
 
+    if(!list)
+    return;
 
-        receiptList.innerHTML += `
 
+
+    list.innerHTML="";
+
+
+
+    database.receipts
+    .forEach((r,i)=>{
+
+
+        list.innerHTML += `
 
         <div class="item">
 
@@ -553,28 +784,23 @@ function showReceipts(){
 
         <br>
 
-
         Klient:
-        ${r.client}
+        ${escapeHTML(r.client)}
 
 
         <br>
-
 
         Usługa:
-        ${r.service}
+        ${escapeHTML(r.service)}
 
 
         <br>
 
-
         Cena:
-        ${r.price} zł
-
+        ${escapeHTML(r.price)} zł
 
 
         <br><br>
-
 
 
         <button onclick="printReceipt(${i})">
@@ -584,7 +810,6 @@ function showReceipts(){
         </button>
 
 
-
         <button onclick="deleteReceipt(${i})">
 
         ❌ Usuń
@@ -592,21 +817,16 @@ function showReceipts(){
         </button>
 
 
-
         </div>
-
 
 
         `;
 
 
-
     });
 
 
-
 }
-
 
 
 
@@ -614,37 +834,37 @@ function showReceipts(){
 function deleteReceipt(i){
 
 
+    if(
+    !confirm(
+        "Usunąć paragon?"
+    )
+    )
+    return;
 
-    database.receipts.splice(i,1);
 
+
+    database.receipts.splice(
+        i,
+        1
+    );
 
 
     saveDatabase();
 
-
     showReceipts();
 
-
     updateDashboard();
-
 
 
 }
 
 
 
-
-
-
-
-
 // ==========================
-// DRUKOWANIE POJEDYNCZEGO PARAGONU
+// DRUKOWANIE
 // ==========================
-
 
 function printReceipt(index){
-
 
 
     let r =
@@ -660,186 +880,92 @@ function printReceipt(index){
 
 
 
-    let date =
-    new Date()
-    .toLocaleString("pl-PL");
-
-
-
     let html = `
 
+    <html>
 
+    <head>
 
-<!DOCTYPE html>
+    <title>
+    Paragon
+    </title>
 
-<html>
 
+    <style>
 
-<head>
+    body{
 
+        font-family:monospace;
+        width:300px;
 
-<meta charset="UTF-8">
+    }
 
+    </style>
 
-<title>
-Paragon
-</title>
 
+    </head>
 
 
-<style>
+    <body>
 
 
-body{
+    <h3>
+    ${escapeHTML(database.settings.serviceName)}
+    </h3>
 
 
-font-family:monospace;
+    Serwis elektroniki
 
-width:80mm;
+    <hr>
 
-margin:auto;
 
-padding:15px;
+    Data:
 
+    ${new Date()
+    .toLocaleString("pl-PL")}
 
-}
 
+    <hr>
 
 
-.center{
+    Klient:
 
+    ${escapeHTML(r.client)}
 
-text-align:center;
 
+    <br><br>
 
-}
 
+    Usługa:
 
+    ${escapeHTML(r.service)}
 
-.line{
 
+    <br><br>
 
-border-top:1px dashed black;
 
-margin:10px 0;
+    Cena:
 
+    ${escapeHTML(r.price)}
+    zł
 
-}
 
+    <hr>
 
-</style>
 
+    Dziękujemy!
 
 
-</head>
+    </body>
 
 
+    </html>
 
-<body>
-
-
-
-
-<div class="center">
-
-
-<h2>
-
-${database.settings.serviceName}
-
-</h2>
-
-
-Serwis elektroniki
-
-
-</div>
-
-
-
-
-<div class="line"></div>
-
-
-
-Data:
-${date}
-
-
-
-<div class="line"></div>
-
-
-
-
-PARAGON
-
-
-<br><br>
-
-
-
-Klient:
-
-${r.client}
-
-
-
-<br><br>
-
-
-
-Usługa:
-
-${r.service}
-
-
-
-<br><br>
-
-
-
-Cena:
-
-${r.price} zł
-
-
-
-
-<div class="line"></div>
-
-
-
-<div class="center">
-
-
-Dziękujemy za skorzystanie z usług
-
-
-<br><br>
-
-
-${database.settings.serviceName}
-
-
-</div>
-
-
-
-
-</body>
-
-
-</html>
-
-
-
-`;
+    `;
 
 
 
     win.document.write(html);
-
 
     win.document.close();
 
@@ -847,48 +973,61 @@ ${database.settings.serviceName}
 
     setTimeout(()=>{
 
-
         win.print();
-
-
 
     },500);
 
 
-
 }
+/*
+TechDesk Hub
+app.js v0.2.4
 
-
-
-
+Część 3/3
+*/
 
 
 // ==========================
 // NOTATKI
 // ==========================
 
-
 function addNote(){
 
 
-    if(noteText.value==="")
-    return;
+    let text =
+    $("noteText").value.trim();
 
 
 
-    database.notes.push(
+    if(text===""){
 
-        noteText.value
+        alert(
+            "Wpisz notatkę"
+        );
 
-    );
+        return;
+
+    }
+
+
+
+    database.notes.push({
+
+        id:Date.now(),
+
+        text,
+
+        date:
+        new Date()
+        .toLocaleString("pl-PL")
+
+    });
 
 
 
     saveDatabase();
 
-
     showNotes();
-
 
     updateDashboard();
 
@@ -902,26 +1041,43 @@ function addNote(){
 function showNotes(){
 
 
-    notesList.innerHTML="";
+    let list =
+    $("notesList");
+
+
+    if(!list)
+    return;
 
 
 
-    database.notes.forEach((n,i)=>{
+    list.innerHTML="";
 
 
 
-        notesList.innerHTML += `
+    database.notes
+    .forEach((n,i)=>{
+
+
+        list.innerHTML += `
 
 
         <div class="item">
 
 
-        📝 ${n}
+        📝
 
+        ${escapeHTML(n.text)}
+
+
+        <br>
+
+
+        <small>
+        ${escapeHTML(n.date)}
+        </small>
 
 
         <br><br>
-
 
 
         <button onclick="deleteNote(${i})">
@@ -934,12 +1090,10 @@ function showNotes(){
         </div>
 
 
-
         `;
 
 
     });
-
 
 
 }
@@ -951,33 +1105,35 @@ function showNotes(){
 function deleteNote(i){
 
 
-    database.notes.splice(i,1);
+    if(
+    !confirm(
+        "Usunąć notatkę?"
+    )
+    )
+    return;
 
+
+
+    database.notes.splice(
+        i,
+        1
+    );
 
 
     saveDatabase();
 
-
     showNotes();
 
-
     updateDashboard();
-
 
 
 }
 
 
 
-
-
-
-
-
 // ==========================
-// BACKUP JSON
+// EXPORT BACKUP JSON
 // ==========================
-
 
 function exportJSON(){
 
@@ -986,15 +1142,20 @@ function exportJSON(){
     new Blob(
 
         [
+
         JSON.stringify(
             database,
             null,
             4
         )
+
         ],
 
         {
-            type:"application/json"
+
+        type:
+        "application/json"
+
         }
 
     );
@@ -1002,12 +1163,16 @@ function exportJSON(){
 
 
     let link =
-    document.createElement("a");
+    document.createElement(
+        "a"
+    );
 
 
 
     link.href =
-    URL.createObjectURL(blob);
+    URL.createObjectURL(
+        blob
+    );
 
 
 
@@ -1026,8 +1191,11 @@ function exportJSON(){
 
 
 
-function importJSON(event){
+// ==========================
+// IMPORT BACKUP JSON
+// ==========================
 
+function importJSON(event){
 
 
     let file =
@@ -1045,76 +1213,145 @@ function importJSON(event){
 
 
 
-    reader.onload=function(e){
+    reader.onload =
+    function(e){
 
 
 
-        database =
-        JSON.parse(
-            e.target.result
-        );
+        try{
 
-        if(!database.settings){
 
-    database.settings={
-        serviceName:""
+            let data =
+            JSON.parse(
+                e.target.result
+            );
+
+
+
+            if(
+
+            !data.settings ||
+
+            !Array.isArray(data.repairs) ||
+
+            !Array.isArray(data.inventory) ||
+
+            !Array.isArray(data.receipts) ||
+
+            !Array.isArray(data.notes)
+
+            ){
+
+
+                alert(
+                    "❌ Nieprawidłowy backup TechDesk Hub"
+                );
+
+
+                return;
+
+
+            }
+
+
+
+            database=data;
+
+
+
+            database.dbVersion =
+            "0.2.4";
+
+
+
+            saveDatabase();
+
+
+
+            updateDashboard();
+
+
+            showRepairs();
+
+
+            showInventory();
+
+
+            showReceipts();
+
+
+            showNotes();
+
+
+
+            checkServiceName();
+
+
+
+            alert(
+                "✅ Przywrócono kopię zapasową"
+            );
+
+
+        }
+        catch{
+
+
+            alert(
+                "❌ Błąd odczytu pliku"
+            );
+
+
+        }
+
+
+
     };
 
-}
 
 
-document
-.getElementById("welcomeOverlay")
-.style.display="none";
-
-
-
-        saveDatabase();
-
-
-
-        updateDashboard();
-
-
-        showRepairs();
-
-
-        showInventory();
-
-
-        showReceipts();
-
-
-        showNotes();
-
-
-
-        alert(
-        "✅ Przywrócono kopię"
-        );
-
-
-
-    };
-
-
-
-    reader.readAsText(file);
-
+    reader.readAsText(
+        file
+    );
 
 
 }
-
-
-
 
 
 
 
 // ==========================
-// START
+// RESET DANYCH
 // ==========================
 
+function resetDatabase(){
+
+
+    if(
+    !confirm(
+        "Usunąć wszystkie dane TechDesk Hub?"
+    )
+    )
+    return;
+
+
+
+    localStorage.removeItem(
+        "techdesk_database"
+    );
+
+
+
+    location.reload();
+
+
+}
+
+
+
+// ==========================
+// START APLIKACJI
+// ==========================
 
 loadDatabase();
 
@@ -1135,44 +1372,3 @@ showReceipts();
 
 
 showNotes();
-
-function openImport(){
-
-
-    document
-    .getElementById("importFile")
-    .click();
-
-
-}
-
-
-
-function createNewService(){
-
-
-    let name =
-    prompt(
-        "Podaj nazwę serwisu:"
-    );
-
-
-    if(name){
-
-
-        database.settings.serviceName =
-        name;
-
-
-        saveDatabase();
-
-
-        document
-        .getElementById("welcomeOverlay")
-        .style.display="none";
-
-
-    }
-
-
-}h
