@@ -4,13 +4,271 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="description" content="TechDesk Hub - aplikacja do zarządzania serwisem elektroniki, naprawami, magazynem i dokumentami.">
-<meta name="robots" content="index, follow">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>TechDesk Hub v0.2.3</title>
 
-<link rel="stylesheet" href="style.css">
+<title>
+TechDesk Hub
+</title>
+
+
+<style>
+
+*{
+
+box-sizing:border-box;
+
+font-family:Arial, sans-serif;
+
+}
+
+
+
+body{
+
+margin:0;
+
+background:#111827;
+
+color:white;
+
+}
+
+
+
+header{
+
+background:#0f172a;
+
+padding:20px;
+
+text-align:center;
+
+font-size:24px;
+
+font-weight:bold;
+
+}
+
+
+
+nav{
+
+display:flex;
+
+justify-content:center;
+
+gap:10px;
+
+padding:15px;
+
+background:#1e293b;
+
+flex-wrap:wrap;
+
+}
+
+
+
+button{
+
+background:#2563eb;
+
+border:none;
+
+color:white;
+
+padding:10px 15px;
+
+border-radius:8px;
+
+cursor:pointer;
+
+}
+
+
+
+button:hover{
+
+background:#1d4ed8;
+
+}
+
+
+
+.page{
+
+display:none;
+
+padding:20px;
+
+}
+
+
+
+.page.active{
+
+display:block;
+
+}
+
+
+
+.card{
+
+background:#1e293b;
+
+padding:20px;
+
+border-radius:12px;
+
+margin-bottom:15px;
+
+}
+
+
+
+.dashboard{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(180px,1fr));
+
+gap:15px;
+
+}
+
+
+
+.stat{
+
+background:#334155;
+
+padding:20px;
+
+border-radius:12px;
+
+text-align:center;
+
+font-size:20px;
+
+}
+
+
+
+.item{
+
+background:#334155;
+
+padding:15px;
+
+border-radius:10px;
+
+margin:10px 0;
+
+}
+
+
+
+input, textarea, select{
+
+width:100%;
+
+padding:10px;
+
+margin:5px 0 10px;
+
+border-radius:8px;
+
+border:none;
+
+}
+
+
+
+textarea{
+
+height:100px;
+
+resize:none;
+
+}
+
+
+
+/* START SCREEN */
+
+
+#welcomeOverlay{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:100%;
+
+background:#020617;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+z-index:999;
+
+
+}
+
+
+
+#welcomeBox{
+
+background:#1e293b;
+
+padding:30px;
+
+border-radius:15px;
+
+width:90%;
+
+max-width:400px;
+
+text-align:center;
+
+}
+
+
+
+#welcomeBox button{
+
+width:100%;
+
+margin-top:10px;
+
+}
+
+
+
+footer{
+
+text-align:center;
+
+padding:20px;
+
+color:#94a3b8;
+
+}
+
+
+</style>
+
 
 </head>
 
@@ -18,148 +276,209 @@
 <body>
 
 
-<div class="app">
+<header>
+
+🔧 TechDesk Hub
+
+</header>
 
 
-<aside class="sidebar">
+<!-- =====================
+START
+===================== -->
+
+
+<div id="welcomeOverlay">
+
+
+<div id="welcomeBox">
 
 
 <h2>
+
 🔧 TechDesk Hub
+
 </h2>
 
 
-<p class="version">
-v0.2.3
+<p>
+
+Witaj! Wybierz sposób uruchomienia:
+
 </p>
 
 
 
-<button onclick="showPage('dashboard')">
-🏠 Dashboard
-</button>
+<input
 
-
-<button onclick="showPage('repairs')">
-🔧 Naprawy
-</button>
-
-
-<button onclick="showPage('inventory')">
-📦 Magazyn
-</button>
-
-
-<button onclick="showPage('receipts')">
-🧾 Paragony
-</button>
-
-
-<button onclick="showPage('notes')">
-📝 Notatki
-</button>
-
-
-
-<div class="bottom">
-
-
-<button onclick="exportJSON()">
-💾 Eksport JSON
-</button>
-
-
-<input 
 type="file"
+
 id="importFile"
+
 accept=".json"
+
 style="display:none"
+
 onchange="importJSON(event)"
+
 >
 
 
-<button onclick="document.getElementById('importFile').click()">
-📂 Import JSON
+
+<button onclick="openImport()">
+
+📂 Importuj backup
+
 </button>
+
+
+
+<button onclick="createNewService()">
+
+⚙ Nowy serwis
+
+</button>
+
 
 
 </div>
 
 
-</aside>
+</div>
 
 
 
+<!-- =====================
+MENU
+===================== -->
 
 
-<main class="content">
+<nav>
+
+
+<button onclick="showPage('dashboard')">
+
+🏠 Start
+
+</button>
+
+
+<button onclick="showPage('repairs')">
+
+🔧 Naprawy
+
+</button>
+
+
+<button onclick="showPage('inventory')">
+
+📦 Magazyn
+
+</button>
+
+
+<button onclick="showPage('receipts')">
+
+🧾 Paragony
+
+</button>
+
+
+<button onclick="showPage('notes')">
+
+📝 Notatki
+
+</button>
+
+
+</nav>
 
 
 
+<!-- =====================
+DASHBOARD
+===================== -->
 
 
 <section id="dashboard" class="page active">
 
 
-<h1>
-🏠 Dashboard
-</h1>
-
-
-<div class="cards">
-
-
 <div class="card">
 
-<h2 id="repairCount">
-0
+
+<h2>
+
+Dashboard
+
 </h2>
 
-<p>
-Naprawy
-</p>
+
+<div class="dashboard">
+
+
+
+<div class="stat">
+
+🔧 Naprawy
+
+<br>
+
+<span id="repairCount">
+
+0
+
+</span>
 
 </div>
 
 
 
-<div class="card">
+<div class="stat">
 
-<h2 id="partsCount">
+📦 Części
+
+<br>
+
+<span id="partsCount">
+
 0
-</h2>
 
-<p>
-Części
-</p>
+</span>
 
 </div>
 
 
 
-<div class="card">
+<div class="stat">
 
-<h2 id="receiptCount">
+🧾 Paragony
+
+<br>
+
+<span id="receiptCount">
+
 0
-</h2>
 
-<p>
-Paragony
-</p>
+</span>
 
 </div>
 
 
 
-<div class="card">
+<div class="stat">
 
-<h2 id="noteCount">
+📝 Notatki
+
+<br>
+
+<span id="noteCount">
+
 0
-</h2>
 
-<p>
-Notatki
-</p>
+</span>
+
+</div>
+
 
 </div>
 
@@ -168,63 +487,81 @@ Notatki
 
 
 </section>
-
-
-
-
-
+<!-- =====================
+NAPRAWY
+===================== -->
 
 
 <section id="repairs" class="page">
 
 
-<h1>
-🔧 Naprawy
-</h1>
+<div class="card">
+
+
+<h2>
+
+🔧 Nowa naprawa
+
+</h2>
 
 
 
-<div class="box">
-
-
-<h3>
-Nowa naprawa
-</h3>
+<input
+id="device"
+placeholder="Urządzenie np. iPhone 13"
+>
 
 
 
-<input id="device"
-placeholder="Urządzenie">
+<input
+id="client"
+placeholder="Klient"
+>
 
 
-<input id="client"
-placeholder="Klient">
 
+<textarea
+id="problem"
+placeholder="Opis usterki"
+></textarea>
 
-<input id="problem"
-placeholder="Problem">
 
 
 <select id="repairStatus">
 
 
 <option>
-Nowe
+
+Przyjęto
+
 </option>
 
 
 <option>
+
 Diagnoza
+
 </option>
 
 
 <option>
-Naprawa
+
+W trakcie
+
 </option>
 
 
 <option>
+
 Gotowe
+
+</option>
+
+
+<option>
+
+Odebrane
+
 </option>
 
 
@@ -232,19 +569,26 @@ Gotowe
 
 
 
-<input id="repairCost"
-placeholder="Koszt zł">
+<input
+id="repairCost"
+type="number"
+placeholder="Cena zł"
+>
 
 
-<textarea id="repairNote"
-placeholder="Notatka techniczna"></textarea>
+
+<textarea
+id="repairNote"
+placeholder="Notatka do naprawy"
+></textarea>
 
 
 
 <button onclick="addRepair()">
-💾 Zapisz naprawę
-</button>
 
+➕ Dodaj naprawę
+
+</button>
 
 
 </div>
@@ -252,14 +596,14 @@ placeholder="Notatka techniczna"></textarea>
 
 
 
+<div class="card">
 
-<div class="box">
 
+<h2>
 
-<h3>
 Lista napraw
-</h3>
 
+</h2>
 
 
 <div id="repairList">
@@ -267,9 +611,7 @@ Lista napraw
 </div>
 
 
-
 </div>
-
 
 
 </section>
@@ -278,36 +620,51 @@ Lista napraw
 
 
 
+<!-- =====================
+MAGAZYN
+===================== -->
+
 
 <section id="inventory" class="page">
 
 
-<h1>
-📦 Magazyn
-</h1>
+<div class="card">
+
+
+<h2>
+
+📦 Dodaj część
+
+</h2>
 
 
 
-<div class="box">
+<input
 
+id="partName"
 
-<h3>
-Dodaj część
-</h3>
+placeholder="Nazwa części"
 
-
-<input id="partName"
-placeholder="Nazwa części">
+>
 
 
 
-<input id="partCount"
-placeholder="Ilość">
+<input
+
+id="partCount"
+
+type="number"
+
+placeholder="Ilość"
+
+>
 
 
 
 <button onclick="addPart()">
-➕ Dodaj
+
+➕ Dodaj część
+
 </button>
 
 
@@ -317,12 +674,14 @@ placeholder="Ilość">
 
 
 
-<div class="box">
+<div class="card">
 
 
-<h3>
-Stan magazynu
-</h3>
+<h2>
+
+Magazyn
+
+</h2>
 
 
 
@@ -331,9 +690,7 @@ Stan magazynu
 </div>
 
 
-
 </div>
-
 
 
 </section>
@@ -343,46 +700,62 @@ Stan magazynu
 
 
 
-
+<!-- =====================
+PARAGONY
+===================== -->
 
 
 <section id="receipts" class="page">
 
 
-<h1>
-🧾 Paragony
-</h1>
+<div class="card">
+
+
+<h2>
+
+🧾 Nowy paragon
+
+</h2>
 
 
 
-<div class="box">
+<input
 
+id="receiptClient"
 
-<h3>
-Nowy paragon
-</h3>
+placeholder="Klient"
 
-
-
-<input id="receiptClient"
-placeholder="Klient">
+>
 
 
 
-<input id="receiptService"
-placeholder="Usługa">
+<input
+
+id="receiptService"
+
+placeholder="Usługa"
+
+>
 
 
 
-<input id="receiptPrice"
-placeholder="Cena zł">
+<input
+
+id="receiptPrice"
+
+type="number"
+
+placeholder="Cena zł"
+
+>
 
 
 
 <button onclick="addReceipt()">
-➕ Dodaj paragon
-</button>
 
+➕ Dodaj paragon
+
+</button>
 
 
 </div>
@@ -390,13 +763,14 @@ placeholder="Cena zł">
 
 
 
+<div class="card">
 
-<div class="box">
 
+<h2>
 
-<h3>
-Historia paragonów
-</h3>
+Lista paragonów
+
+</h2>
 
 
 
@@ -411,36 +785,40 @@ Historia paragonów
 
 
 </section>
-
-
-
-
-
-
-
+<!-- =====================
+NOTATKI
+===================== -->
 
 
 <section id="notes" class="page">
 
 
-<h1>
-📝 Notatki
-</h1>
+<div class="card">
+
+
+<h2>
+
+📝 Nowa notatka
+
+</h2>
 
 
 
-<div class="box">
+<textarea
 
+id="noteText"
 
-<textarea id="noteText"
-placeholder="Treść notatki"></textarea>
+placeholder="Treść notatki"
+
+></textarea>
 
 
 
 <button onclick="addNote()">
-💾 Zapisz
-</button>
 
+➕ Dodaj notatkę
+
+</button>
 
 
 </div>
@@ -448,20 +826,20 @@ placeholder="Treść notatki"></textarea>
 
 
 
+<div class="card">
 
-<div class="box">
 
+<h2>
 
-<h3>
 Lista notatek
-</h3>
+
+</h2>
 
 
 
 <div id="notesList">
 
 </div>
-
 
 
 </div>
@@ -475,43 +853,82 @@ Lista notatek
 
 
 
+<!-- =====================
+USTAWIENIA / BACKUP
+===================== -->
 
-</main>
+
+<section id="settings" class="page">
+
+
+<div class="card">
+
+
+<h2>
+
+⚙ Ustawienia
+
+</h2>
+
+
+
+<button onclick="exportJSON()">
+
+💾 Eksportuj backup
+
+</button>
+
+
+
+<br><br>
+
+
+
+<button onclick="openImport()">
+
+📂 Importuj backup
+
+</button>
+
+
+
+<br><br>
+
+
+
+<button onclick="resetDatabase()">
+
+🗑 Usuń wszystkie dane
+
+</button>
+
 
 
 </div>
-  
-<div id="welcomeOverlay">
-
-    <div id="welcomeBox">
-
-        <h2>
-        🔧 TechDesk Hub
-        </h2>
 
 
-        <p>
-        Witaj! Wybierz sposób uruchomienia:
-        </p>
+</section>
 
 
-        <button onclick="openImport()">
-        📂 Importuj backup
-        </button>
 
 
-        <button onclick="createNewService()">
-        ⚙ Nowy serwis
-        </button>
+
+<footer>
+
+TechDesk Hub v0.2.4
+
+<br>
+
+Serwis elektroniki
+
+</footer>
 
 
-    </div>
-
-</div>
 
 
 
 <script src="app.js"></script>
+
 
 
 </body>
